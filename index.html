@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>倒讚想傑</title>
-        <meta property="og:description" content="一個觀看想傑直播倒讚比例的網站">
+        <meta property="og:description" content="一個觀看羅傑直播倒讚比例的網站">
         <meta property="og:image" content="https://roger9527downvote.github.io/image/ogimage.jpg" />
 
         <!-- jquery-3.6.0.min.js --> 
@@ -24,7 +24,7 @@
         -->
         <style>
           .card-body{
-            height: 200px;
+            min-height: 200px;
           }
           .video_thumbnail{
             height: auto; max-height: 100%;
@@ -34,7 +34,6 @@
             background-color: black;
           }
         </style>
-
     </head>
 
     <body>
@@ -56,57 +55,53 @@
             <div class="col-lg-6 col-md-8 mx-auto">
               <h1 class="fw-light">想傑倒讚觀察</h1>
               <p class="lead text-muted">
-                數據並非為及時官方數據，誤差值約在1%內，
-                清斟酌參考。<br>
-                請勿重複刷新頁面，數據資料要求有額度限制。
-              </p>
+                倒讚數據並非為及時官方數據，清斟酌參考。<br>
+                不要問為什麼資料載那麼久，<br>
+                YT不給查倒讚只能用第三方資料，有讀取頻率限制。<br>
+                <div v-if="!finish">
+                  載入 {{load*2}} / {{length}}
+                </div><div v-if="finish">
+                  載入完成
+                </div>
+              </p>               
               <p>
                 <a href="https://www.youtube.com/channel/UCiEm9noegBIb-AzjqpxKffA" class="btn btn-danger my-2" target="_blank" style="width: 7em;">Youtube</a>
                 <a href="https://www.twitch.tv/roger9527?lang=zh-tw" class="btn btn-primary my-2" target="_blank" style="width: 7em; background-color: #9147ff;">Twitch</a>
               </p>
-            </div>
-          </div>
-        </section>
-        <!-- 累累病不想做排序功能
-        <section class="py-6 text-center container">
-          <div class="row" style="padding: 32px 0;">
-            
-            <div class="col-lg-6 col-md-8 mx-auto" id="filter">
-              <div class="lead text-muted">
-                篩選 : 倒讚比例低於 <input type="text" v-model.number="a" style="width: 4em;" maxlength="2" oninput = "value=value.replace(/[^\d]/g,'')"> %
-                <br>
+              倒讚比例介於 <input type="text" v-model.number="a" style="width: 4em;" maxlength="2" oninput = "value=value.replace(/[^\d]/g,'')"> % 到 
+                <input type="text" v-model.number="b" style="width: 4em;" maxlength="2" oninput = "value=value.replace(/[^\d]/g,'')"> %
+                <br><br>
                 依
-                <select>
-                  <option>播放清單順序</option>
-                  <option>倒讚量</option>
-                  <option>倒讚比例</option>
+                <select v-on:change="selectA" id="a" style="height: 2em;width: 6em;">
+                  <option v-for="(list,index) in listA" :value="list.value">{{list.item}}</option>
                 </select>
-                的
-                <select>
-                  <option>高到低</option>
-                  <option>低到高</option>
+                進行
+                <select v-on:change="selectB" id="b" style="height: 2em;width: 6em;">
+                  <option v-for="(list,index) in listB" :value="list.value">{{list.item}}</option>
                 </select>
-                排序
-              </div>
+                排序<br>
             </div>
           </div>
         </section>
-        -->
+        
         <div class="album py-5 bg-light">
           <div class="container">      
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4  g-3" >
-              <div v-for="item in list">
+              <div v-for="item in list" v-show="item.dislikePercentage=='計算中' | (item.dislikePercentage>=a&item.dislikePercentage<=b)">
                 <div class="card shadow-sm">
-
-                  <div v-html="item.thumbnail" class="d-flex justify-content-center align-items-center video_thumbnail_box">
+                  <div v-if="item.public" class="d-flex justify-content-center align-items-center video_thumbnail_box">
+                    <a v-bind:href="item.link"target="_blank">
+                      <img v-bind:src="item.thumbnail" class="video_thumbnail" alt="YT直播縮圖">
+                    </a>
                   </div>
                   <div class="card-body">                  
                     <p class="card-text">
-                      <div v-html="item.titleLink" style=" height: 1.5em; white-space: nowrap; overflow:hidden; text-overflow:ellipsis;">
+                      <div  style="height: 1.5em; white-space: nowrap; overflow:hidden; text-overflow:ellipsis;">
+                        <a v-bind:href="item.link"target="_blank" style="color:black;">{{item.title}}</a>
                       </div>
                       <br>
                       觀看人數 : {{item.view}}<br>
-                      按讚數 : {{item.like}} ; 倒讚數 : {{item.dislike}}<br>
+                      正讚 : {{item.like}} ; 倒讚 : {{item.dislike}}<br>
                       倒讚比例 : {{item.dislikePercentage}} %
                     </p>
                     <div class="d-flex justify-content-end align-items-center">
@@ -118,6 +113,7 @@
             </div>
         </div>
         </div>
+
       </main>
     </body>
     <script src="./js/main.js"></script>

@@ -1,16 +1,24 @@
 var key="AIzaSyCz4Zl_MIXMjZNfeG14te0xyagE-GW4PjY"
-var dataUrl="https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails,status&playlistId=PLTsu_zOBeI3788ttxT6XJp_0t5k_tuJYn&key="+key+"&maxResults=50";
+channelId='UCiEm9noegBIb-AzjqpxKffA'
+var dataUrl='';
 
-var listData=[];
-var page=0;
+var listData=[];var page=0;
 
 var timeOut;
 var finishLoad=false;
 
-getNewData(dataUrl);
+getChannel();
 
+function getChannel(){
+    $.get('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id='+channelId+'&key='+key, function(_data) {
+        dataUrl='https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails,status&playlistId='+_data.items[0].contentDetails.relatedPlaylists.uploads+'&key='+key+'&maxResults=50'
+        getNewData(dataUrl);
+    })
+    
+}
 function getNewData(_dataUrl){
     $.get(_dataUrl, function(_data) {
+        //console.log(_data)
         getVideoId(_data,_data.nextPageToken);
     });    
 }
@@ -18,23 +26,17 @@ function getVideoId(_listData,_pageToken){
 
     $.each(_listData.items,function(i,item){
 
-        var videoData={index:'',title:''.titleLink,id:'',thumbnail:'',time:'',view:'讀取中',like:'讀取中',dislike:'讀取中',dislikePercentage:'',public:false};
+        var videoData={index:'',title:''.titleLink,id:'',thumbnail:'',time:'',view:'讀取中',like:'讀取中',dislike:'讀取中',dislikePercentage:'計算中',public:false};
 
         videoData.index=page*50+i;
         videoData.title=item.snippet.title;
         videoData.id=item.contentDetails.videoId;
         videoData.time=item.contentDetails.videoPublishedAt;
-
-        videoData.titleLink=
-                '<a href="https://youtu.be/'+videoData.id+
-                '" target="_blank" style="color:black;">'+videoData.title+'</a>';
+        videoData.link='https://youtu.be/'+videoData.id;
 
         if(item.status.privacyStatus=="public"){
             videoData.public=true;
-
-            videoData.thumbnail=
-                '<a href="https://youtu.be/'+videoData.id+
-                '" target="_blank"><img class="video_thumbnail" src="'+item.snippet.thumbnails.high.url+'" alt="YT直播縮圖"></a>';
+            videoData.thumbnail=item.snippet.thumbnails.high.url;
         }
 
         listData.push(videoData);
@@ -47,16 +49,16 @@ function getVideoId(_listData,_pageToken){
         //console.log(listData);
         page=0;
         getVideoData();
-        timeOut=setInterval(getVideoData,1000*1.55);
+        timeOut=setInterval(getVideoData,1000*0.65);
     }
 }
 function getVideoData (){
 
-    var length = (page+1)*5;
+    var length = (page+1)*2;
     if(length>listData.length-1){
         length=listData.length;
     }
-    for(var i= page*5;i<length;i++){
+    for(var i= page*2;i<length;i++){
         if(listData[i].public){
             getVideoCount(i,listData[i].id)
         }else{
@@ -66,10 +68,9 @@ function getVideoData (){
         } 
     }
 
-    page++;//console.log(page*5)
-    if(page*5>listData.length){
-        console.log('YYDS')
-        console.log(listData)
+    page++;//console.log(page*2)
+    if(page*2>listData.length){
+        console.log('Finish')
         finishLoad=true;
         clearInterval(timeOut);
     }
