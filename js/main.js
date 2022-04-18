@@ -5,7 +5,6 @@ var dataUrl='';
 var listData=[];var page=0;
 
 var timeOut;
-var finishLoad=false;
 
 getChannel();
 
@@ -71,7 +70,7 @@ function getVideoData (){
 
     page++;//console.log(page*2)
     if(page*2>listData.length){
-        finishLoad=true;
+        vm.finish=true;
         clearInterval(timeOut);
     }
 }
@@ -98,6 +97,11 @@ function getVideoCount(index,_id){
             listData[index].dislikePercentage=dislikePercentage;
         },
         error:function(){
+            listData[index].view='錯誤';
+            listData[index].like='錯誤';
+            listData[index].dislike='錯誤';
+            var dislikePercentage='錯誤';
+            listData[index].dislikePercentage=dislikePercentage;
             console.log(listData[index].title);
         }
     });

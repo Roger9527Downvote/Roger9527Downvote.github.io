@@ -2,7 +2,7 @@ const vm =new Vue({
     el:'#app',
     data: {
         list:listData,
-        finish:finishLoad,
+        finish:false,
 
         length:listData.length,
         load:0,

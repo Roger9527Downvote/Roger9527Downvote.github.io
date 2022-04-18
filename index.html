@@ -66,16 +66,30 @@
               </p>
               倒讚比例介於 <input type="text" v-model.number="a" style="width: 4em;" maxlength="2" oninput = "value=value.replace(/[^\d]/g,'')"> % 到 
                 <input type="text" v-model.number="b" style="width: 4em;" maxlength="2" oninput = "value=value.replace(/[^\d]/g,'')"> %
-                <br><br>
+              <br><br>
+              <div v-if="finish">
                 依
                 <select v-on:change="selectA" id="a" style="height: 2em;width: 6em;">
-                  <option v-for="(list,index) in listA" :value="list.value">{{list.item}}</option>
+                  <option v-for="list in listA" :value="list.value">{{list.item}}</option>
                 </select>
                 進行
                 <select v-on:change="selectB" id="b" style="height: 2em;width: 6em;">
-                  <option v-for="(list,index) in listB" :value="list.value">{{list.item}}</option>
+                  <option v-for="list in listB" :value="list.value">{{list.item}}</option>
                 </select>
                 排序<br>
+              </div>
+              <div v-if="!finish">
+                依
+                <select style="height: 2em;width: 6em;" disabled="disabled">
+                  <option v-for="list in listA" :value="list.value">{{list.item}}</option>
+                </select>
+                進行
+                <select style="height: 2em;width: 6em;" disabled="disabled">
+                  <option v-for="list in listB" :value="list.value">{{list.item}}</option>
+                </select>
+                排序<br>
+              </div>
+              
             </div>
           </div>
         </section>
@@ -111,7 +125,7 @@
         </div>
 
         <div v-if="load/list.length<1" style="position: fixed; bottom: 0px; right: 0px; width: 100%;transition: 0.5s;">
-          <div class="d-flex justify-content-center align-items-center" style="position: fixed;bottom: 0;width: 100%;font-size: 0.8em;">
+          <div class="d-flex justify-content-center align-items-center" style="position: fixed;bottom: 0;width: 100%;font-size: 0.8em; color: red;">
             資料載入 {{load}} / {{list.length}}
           </div>
           <div  class="progress" style="height: 1.5em">
