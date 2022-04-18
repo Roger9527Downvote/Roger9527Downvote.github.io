@@ -1,11 +1,11 @@
-new Vue({
+const vm =new Vue({
     el:'#app',
     data: {
         list:listData,
         finish:finishLoad,
 
         length:listData.length,
-        load:page,
+        load:0,
 
         a:0,
         b:99,

@@ -52,13 +52,14 @@
       <main id="app">
         <section class="py-6 text-center container">
           <div class="row" style="padding: 48px 0;">
-            <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="col-lg-8 col-md-8 mx-auto">
               <h1 class="fw-light">想傑倒讚觀察</h1>
               <p class="lead text-muted">
                 倒讚數據並非為及時官方數據，清斟酌參考。<br>
                 不要問為什麼資料載那麼久，<br>
                 YT不給查倒讚只能用第三方資料，有讀取頻率限制。<br>
-              </p>               
+              </p>
+              
               <p>
                 <a href="https://www.youtube.com/channel/UCiEm9noegBIb-AzjqpxKffA" class="btn btn-danger my-2" target="_blank" style="width: 7em;">Youtube</a>
                 <a href="https://www.twitch.tv/roger9527?lang=zh-tw" class="btn btn-primary my-2" target="_blank" style="width: 7em; background-color: #9147ff;">Twitch</a>
@@ -109,6 +110,15 @@
         </div>
         </div>
 
+        <div v-if="load/list.length<1" style="position: fixed; bottom: 0px; right: 0px; width: 100%;transition: 0.5s;">
+          <div class="d-flex justify-content-center align-items-center" style="position: fixed;bottom: 0;width: 100%;font-size: 0.8em;">
+            資料載入 {{load}} / {{list.length}}
+          </div>
+          <div  class="progress" style="height: 1.5em">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" v-bind:style="{ width: (load/list.length*100)+'%', }">
+            </div>
+          </div> 
+        </div>
       </main>
     </body>
     <script src="./js/main.js"></script>

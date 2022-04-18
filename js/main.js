@@ -65,12 +65,12 @@ function getVideoData (){
             listData[i].view="NaN";
             listData[i].like="NaN";
             listData[i].dislike="NaN";
-        } 
+        }
+        vm.load++;
     }
 
     page++;//console.log(page*2)
     if(page*2>listData.length){
-        console.log('Finish')
         finishLoad=true;
         clearInterval(timeOut);
     }
