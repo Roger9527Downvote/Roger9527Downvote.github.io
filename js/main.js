@@ -94,6 +94,7 @@ function getVideoCount(index,_id){
             listData[index].like=response.likes;
             listData[index].dislike=response.dislikes;
             var dislikePercentage=Math.round(listData[index].dislike/(listData[index].like+listData[index].dislike)*1000)/10;
+            a(dislikePercentage);
             listData[index].dislikePercentage=dislikePercentage;
         },
         error:function(){
@@ -105,4 +106,20 @@ function getVideoCount(index,_id){
             console.log(listData[index].title);
         }
     });
+}
+
+function a(_p){
+    if(_p>75){
+        percentData[5]++;
+    }else if(_p>60){
+        percentData[4]++;
+    }else if(_p>45){
+        percentData[3]++;
+    }else if(_p>30){
+        percentData[2]++;
+    }else if(_p>15){
+        percentData[1]++;
+    }else{
+        percentData[0]++;
+    }
 }
