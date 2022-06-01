@@ -48,16 +48,16 @@ function getVideoId(_listData,_pageToken){
         //console.log(listData);
         page=0;
         getVideoData();
-        timeOut=setInterval(getVideoData,1000*0.65);
+        timeOut=setInterval(getVideoData,1000*.75);
     }
 }
 function getVideoData (){
 
-    var length = (page+1)*2;
+    var length = (page+1);
     if(length>listData.length-1){
         length=listData.length;
     }
-    for(var i= page*2;i<length;i++){
+    for(var i= page;i<length;i++){
         if(listData[i].public){
             getVideoCount(i,listData[i].id)
         }else{
@@ -68,8 +68,8 @@ function getVideoData (){
         vm.load++;
     }
 
-    page++;//console.log(page*2)
-    if(page*2>listData.length){
+    page++;
+    if(page>listData.length){
         vm.finish=true;
         clearInterval(timeOut);
     }
