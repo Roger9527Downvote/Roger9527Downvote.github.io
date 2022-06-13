@@ -48,7 +48,7 @@ function getVideoId(_listData,_pageToken){
         //console.log(listData);
         page=0;
         getVideoData();
-        timeOut=setInterval(getVideoData,1000*.75);
+        timeOut=setInterval(getVideoData,1000*0.85);
     }
 }
 function getVideoData (){
